@@ -1,4 +1,6 @@
 require 'httparty'
+require 'json'
+
 class Kele
   include HTTParty
   attr_reader :auth_token
@@ -10,6 +12,11 @@ class Kele
     if @auth_token.nil?
       puts "Invalid credentials."
     end
+  end
+
+  def get_me
+    response = self.class.get(base_url("users/me"), headers: { "authorizaton" => @auth_token })
+    @current_user = JSON.parse(response.body)
   end
 
   private
