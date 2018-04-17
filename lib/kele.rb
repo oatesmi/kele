@@ -1,13 +1,13 @@
 require 'httparty'
 require 'json'
+require './lib/roadmap.rb'
 
 class Kele
   include HTTParty
   attr_reader :auth_token
 
   def initialize(email, password)
-    response = self.class.post( base_url("sessions"),
-      body: { email: email, password: password } )
+    response = self.class.post(base_url("sessions"), body: { email: email, password: password } )
     @auth_token = response["auth_token"]
     if @auth_token.nil?
       puts "Invalid credentials."
@@ -23,6 +23,7 @@ class Kele
     response = self.class.get(base_url("mentors/#{mentor_id}/student_availability"), headers: { "authorization" => @auth_token })
     JSON.parse(response.body)
   end
+
 
   private
 
